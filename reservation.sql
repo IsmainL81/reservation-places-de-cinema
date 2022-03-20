@@ -1,5 +1,9 @@
-CREATE DATABASE IF NOT EXISTS reservation;
+-- Database: reservation
 
+-- DROP DATABASE IF EXISTS reservation;
+
+CREATE DATABASE IF NOT EXISTS reservation;
+    
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 -- Structure of the admin table
@@ -370,9 +374,29 @@ INSERT INTO ticket_order (id, ticket_id) VALUES
 ('14783455', '43353857'),
 ('118220566', '46708020');
 
+-- Role: postgres
+-- DROP ROLE IF EXISTS postgres;
+
+CREATE ROLE IF NOT EXISTS postgres;
+ LOGIN
+ SUPERUSER
+ INHERIT
+ CREATEDB
+ CREATEROLE
+ REPLICATION
+ENCRYPTED PASSWORD 'SCRAM-SHA-256$4096:jXZz0vHokHU2uq6mKmdNsw==$y8H2feTiGsZcdlMUXavYchlNMjsn++Q0R0D/zbO1haI=:iRXdR9a6tIaKOVugz1vm6TXkVEgt/mbo185bSpgboIc=';
+
 -- Grant and revocation of rights
 
 GRANT SELECT, INSERT, UPDATE, DELETE
 ON TABLE seance TO users;
 
 GRANT ALL PRIVILEGES ON TABLES TO admin;
+
+-- Publication: reservation
+
+-- DROP PUBLICATION IF EXISTS reservation
+
+CREATE PUBLICATION IF NOT EXISTS reservation
+    FOR ALL TABLES
+    WITH (publish = 'insert, update, delete, truncate', publish_via_partition_root = true);
